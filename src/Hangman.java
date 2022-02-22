@@ -1,18 +1,49 @@
 import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
+import acm.util.RandomGenerator;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Hangman extends GraphicsProgram {
+
+    private char[] pickedWord = retrieveWord();
+    GRect[] blanks = new GRect[pickedWord.length];
+    int blankHeight = 1;
+    int blankWidth = 200/pickedWord.length;
+    int blankSpacing = 50-(pickedWord.length*30);
+
+    String[] alphabet = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
 
     @Override
     public void init(){
 
         drawHangStation();
+        drawBlanks();
+
+        addLetterButtons();
 
     }
 
-    public Hangman(){
+    private void addLetterButtons(){
+
+        JButton[] letterButtons = new JButton[26];
+        for (int i = 0; i < letterButtons.length; i++) {
+            letterButtons[i].setText(alphabet[i]);
+        }
+
+}
+
+    private void drawBlanks(){
+
+        for (int i = 0; i < blanks.length; i++) {
+
+            int currentX = 100;
+
+            blanks[i] = new GRect(blankWidth,blankHeight);
+            add(blanks[i],290+(currentX*i), 300);
+            currentX += blankSpacing;
+        }
 
     }
 
@@ -34,10 +65,27 @@ public class Hangman extends GraphicsProgram {
         add(hangHandle, hangPost.getX(),hangPost.getY());
         hangHandle.setFilled(true);
         hangHandle.setFillColor(brown);
+
+        GRect hangNPost = new GRect(10,30);
+        add(hangNPost, hangHandle.getX()+hangHandle.getWidth()-hangNPost.getWidth(),hangHandle.getY());
+        hangNPost.setFilled(true);
+        hangNPost.setFillColor(brown);
+    }
+
+    private char[] retrieveWord(){
+
+        String[] words = {"dog","mouse"};
+
+        int wordValue = RandomGenerator.getInstance().nextInt(0, words.length-1);
+        String pickedWord = words[wordValue];
+        char[] convertedWord = pickedWord.toCharArray();
+        return convertedWord;
+
     }
 
     public static void main(String[] args) {
-        new Hangman().start();
+        Hangman x = new Hangman();
+        x.start();
     }
 
 }
