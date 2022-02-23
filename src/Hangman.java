@@ -1,8 +1,10 @@
+import svu.csc213.Dialog;
 import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 import acm.util.RandomGenerator;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class Hangman extends GraphicsProgram {
 
@@ -12,6 +14,8 @@ public class Hangman extends GraphicsProgram {
     int blankWidth = 30;
     int blankSpacing = (pickedWord.length*20);
 
+    final int yBTN = 125;
+
     // JButton[] letterButtons = new JButton[26];
     String[] alphabet = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
 
@@ -20,14 +24,54 @@ public class Hangman extends GraphicsProgram {
 
         drawHangStation();
         drawBlanks();
-        addLetterButtons();
+        addButtons();
 
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent ae){
+        switch(ae.getActionCommand()){
+            case "Guess Letter":
+                guessLetter(Dialog.getString("What letter do you guess?"));
+                break;
+            case "Quit Game":
+                System.exit(0);
+                break;
+            case "I Give Up":
+                revealAnswer();
+                break;
+        }
+    }
+
+    private void guessLetter(String guessedLetter){
+
+    }
+
+    private void revealAnswer(){
+
+    }
+
+    private void addButtons(){
+        JButton guessBtn = new JButton("Guess Letter");
+        add(guessBtn,WEST);
+
+        JButton quitBtn = new JButton("Quit Game");
+        add(quitBtn,WEST);
+
+        JButton giveUpBtn = new JButton("I Give Up");
+        add(giveUpBtn,WEST);
+    }
+
+    private void addLetterLabels(){
+        for (int i = 0; i < alphabet.length; i++) {
+
+        }
     }
 
     private void addLetterButtons(){
 
         int xBtn = 15;
-        int yBtn = 15;
+        int yBtn = yBTN;
         int buttonWidth = 50;
         int buttonHeight = 13;
         int buttonSpacing = 5;
@@ -62,7 +106,19 @@ public class Hangman extends GraphicsProgram {
                 new GRect(buttonWidth,buttonHeight),
         };
 
-        for (int i = 0; i < alphabet.length; i++){
+        //first column of letters (a-m)
+        yBtn = yBTN;
+        for (int i = 0; i <= 13; i++){
+            add(btnArr[i],xBtn,yBtn);
+            btnArr[i].setFilled(true);
+            btnArr[i].setFillColor(Color.lightGray);
+            yBtn += buttonSpacing+buttonHeight;
+        }
+
+        //second column of letters (n-z)
+        xBtn = xBtn + 60;
+        yBtn = yBTN;
+        for (int i = 13; i <= 26; i++) {
             add(btnArr[i],xBtn,yBtn);
             btnArr[i].setFilled(true);
             btnArr[i].setFillColor(Color.lightGray);
