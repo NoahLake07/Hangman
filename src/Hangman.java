@@ -1,7 +1,6 @@
 import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 import acm.util.RandomGenerator;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,9 +9,10 @@ public class Hangman extends GraphicsProgram {
     private char[] pickedWord = retrieveWord();
     GRect[] blanks = new GRect[pickedWord.length];
     int blankHeight = 1;
-    int blankWidth = 200/pickedWord.length;
-    int blankSpacing = 50-(pickedWord.length*30);
+    int blankWidth = 30;
+    int blankSpacing = (pickedWord.length*20);
 
+    // JButton[] letterButtons = new JButton[26];
     String[] alphabet = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
 
     @Override
@@ -20,19 +20,56 @@ public class Hangman extends GraphicsProgram {
 
         drawHangStation();
         drawBlanks();
-
         addLetterButtons();
 
     }
 
     private void addLetterButtons(){
 
-        JButton[] letterButtons = new JButton[26];
-        for (int i = 0; i < letterButtons.length; i++) {
-            letterButtons[i].setText(alphabet[i]);
+        int xBtn = 15;
+        int yBtn = 15;
+        int buttonWidth = 50;
+        int buttonHeight = 13;
+        int buttonSpacing = 5;
+
+        //initialize all buttons with pre-populated values
+        GRect[] btnArr = {
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+                new GRect(buttonWidth,buttonHeight),
+        };
+
+        for (int i = 0; i < alphabet.length; i++){
+            add(btnArr[i],xBtn,yBtn);
+            btnArr[i].setFilled(true);
+            btnArr[i].setFillColor(Color.lightGray);
+            yBtn += buttonSpacing+buttonHeight;
         }
 
-}
+    }
 
     private void drawBlanks(){
 
@@ -52,7 +89,7 @@ public class Hangman extends GraphicsProgram {
         Color brown = new Color(154, 111, 33);
 
         GRect hangBase = new GRect(70,25);
-        add(hangBase, 90, 300);
+        add(hangBase, 140, 300);
         hangBase.setFilled(true);
         hangBase.setFillColor(darkBrown);
 
