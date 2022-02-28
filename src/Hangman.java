@@ -25,6 +25,8 @@ public class Hangman extends GraphicsProgram {
     int blankWidth = 30;
     int blankSpacing = 2;
 
+
+
     //setting up lives. The stick-man has 6 limbs, so this means 6 lives.
     int lives = 6;
 
@@ -36,6 +38,7 @@ public class Hangman extends GraphicsProgram {
     double nooseX;
     double nooseY;
 
+    String incorrectGuesses = "Incorrect Guesses:";
     String pickedWordString;
 
     //initializing the head, body, and limbs. Assigning the head and torso. Limbs will be assigned later.
@@ -54,8 +57,10 @@ public class Hangman extends GraphicsProgram {
     JButton guessWord = new JButton("Guess Whole Word");
 
     //initialize usedLettersBox
-    GRect usedButtonsBox = new GRect(200,40);
+    GRect usedButtonsBox = new GRect(607,100);
 
+    //setting up the incorrect guesses label
+    GLabel guessesLabel = new GLabel(incorrectGuesses);
 
     @Override
     public void init(){
@@ -118,6 +123,7 @@ public class Hangman extends GraphicsProgram {
         String guess = Dialog.getString("What do you think the word is? If you guess incorrectly, it's game over...");
         if(guess.equals(pickedWordString)){
             win();
+            revealAllLetters();
         }else{
             endGame();
         }
@@ -216,11 +222,11 @@ public class Hangman extends GraphicsProgram {
         if(checkForLetter(guessedChar,pickedWord)){
             guessedCorrectly(guessedChar);
         }else{
-            guessedWrongly();
+            guessedWrongly(guessedChar);
         }
     }
 
-    private void guessedWrongly(){
+    private void guessedWrongly(char guess){
         System.out.println("Answer Incorrect.");
         lives = lives - 1;
         System.out.println("Life count –1. Remaining lives: " + lives);
@@ -230,8 +236,15 @@ public class Hangman extends GraphicsProgram {
             System.out.println("You loose.");
         }
 
+        updateGuessList(guess);
         updateHangMan();
 
+    }
+
+    private void updateGuessList(char guess){
+        incorrectGuesses = incorrectGuesses + " " + guess;
+        guessesLabel.setLabel(incorrectGuesses);
+        guessesLabel.setVisible(true);
     }
 
     private void guessedCorrectly(char guessedChar){
@@ -307,6 +320,12 @@ public class Hangman extends GraphicsProgram {
         add(quitBtn,WEST);
 
         playAgain.setVisible(false);
+
+        add(guessesLabel, 10, 400);
+        add(usedButtonsBox,-2,380);
+        usedButtonsBox.sendToBack();
+        usedButtonsBox.setFilled(true);
+        usedButtonsBox.setFillColor(new Color(196, 196, 196));
 
         addActionListeners();
     }
